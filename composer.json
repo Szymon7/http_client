@@ -1,12 +1,6 @@
 {
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/Szymon7/php-fig-psr7"
-        }
-    ],
     "require": {
         "firebase/php-jwt": "^6.3",
-        "szymon7/php-fig-psr7": "dev-master"
+        "psr/http-message": "^1.0"
     }
 }
