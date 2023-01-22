@@ -10,6 +10,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-      "ext-curl": "*"
+        "nyholm/psr7": "^1.5",
+        "ext-curl": "*"
     }
 }
