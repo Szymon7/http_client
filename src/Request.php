@@ -26,6 +26,7 @@ class Request extends Client
 
         $this->setMethod($method);
         $this->setBody($options['body'] ?? null);
+        $this->setQuery($options['params'] ?? $options['query'] ?? []);
 
         $response = (new CurlController())
             ->prepare($this->request)

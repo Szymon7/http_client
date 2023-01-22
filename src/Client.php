@@ -38,6 +38,22 @@ class Client
         return $this;
     }
 
+    public function setQuery(array $params): static
+    {
+        $query = [];
+        if (!empty($params)) {
+            foreach ($params as $name => $param) {
+                $query[] = $name . '=' . $param;
+            }
+
+            $query = implode('&', $query);
+        }
+
+        $uri = $this->request->getUri()->withQuery(!empty($params) ? $query : '');
+        $this->request = $this->request->withUri($uri);
+        return $this;
+    }
+
     /**
      * @throws FailureResponse
      */

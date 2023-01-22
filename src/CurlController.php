@@ -44,6 +44,10 @@ class CurlController
         $this->setMethod($request);
         $this->setUrl($request);
 
+        if ($request->getMethod() !== 'GET') {
+            $this->setParams($request);
+        }
+
         return $this;
     }
 
@@ -115,6 +119,22 @@ class CurlController
     public function setUrl(RequestInterface $request): static
     {
         curl_setopt($this->curlHandle, CURLOPT_URL, $request->getUri()->__toString());
+
+        return $this;
+    }
+
+    public function setParams(RequestInterface $request): static
+    {
+        $params = [];
+        foreach (explode('&', $request->getUri()->getQuery()) as $chunk) {
+            $param = explode("=", $chunk);
+
+            if ($param) {
+                $params[urldecode($param[0])] = urldecode($param[1]);
+            }
+        }
+
+        curl_setopt($this->curlHandle, CURLOPT_POSTFIELDS, $params);
 
         return $this;
     }
