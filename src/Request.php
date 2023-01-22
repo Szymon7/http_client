@@ -2,41 +2,36 @@
 
 namespace HttpClient;
 
-class Request extends \HttpClient\Message implements \Psr\Http\Message\RequestInterface
+use HttpClient\Exceptions\FailureResponse;
+use Nyholm\Psr7\Uri;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\UriInterface;
+
+class Request extends Client
 {
-    private string $Uri;
-
-    public function __construct()
+    /**
+     * @throws FailureResponse
+     */
+    public function execute(string $method, $uri, array $options = []): ResponseInterface
     {
-    }
+        if (!($uri instanceof UriInterface)) {
+            $uri = new Uri($uri);
+        }
 
-    public function getRequestTarget()
-    {
-        // TODO Implement getRequestTarget() method.
-    }
+        $this->request = $this->request->withUri($uri);
 
-    public function withRequestTarget($requestTarget)
-    {
-        // TODO: Implement withRequestTarget() method.
-    }
+        foreach ($options['headers'] as $header => $headerBody) {
+            $this->setHeader($header, $headerBody);
+        }
 
-    public function getMethod()
-    {
-        // TODO: Implement getMethod() method.
-    }
+        $this->setMethod($method);
+        $this->setBody($options['body'] ?? null);
 
-    public function withMethod($method)
-    {
-        // TODO: Implement withMethod() method.
-    }
+        $response = (new CurlController())
+            ->prepare($this->request)
+            ->execute();
+        $this->validateResponse($response);
 
-    public function getUri()
-    {
-        // TODO: Implement getUri() method.
-    }
-
-    public function withUri(\Psr\Http\Message\UriInterface $uri, $preserveHost = false)
-    {
-        // TODO: Implement withUri() method.
+        return $response;
     }
 }
