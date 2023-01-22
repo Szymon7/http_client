@@ -1,6 +1,13 @@
 {
-    "require": {
-        "nyholm/psr7": "^1.5",
-        "ext-curl": "*"
-    }
+    "name": "szymon7/http_client",
+    "description": "New http client",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Szymon7\\HttpClient\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {}
 }
